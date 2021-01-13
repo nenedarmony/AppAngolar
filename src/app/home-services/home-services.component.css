@@ -1,0 +1,77 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+body {
+    font: 600 15px Lato, sans-serif;
+    line-height: 1.8;
+    
+}
+h4{
+  
+}
+.col-sm-4{
+  text-align:center;
+  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  padding:30px 30px 30px 30px ;
+  
+    }
+    
+.h2services
+{
+   text-align:center;
+   
+  border-top:4px  solid lightskyblue;
+   width: 50%;
+      left: 20%;
+ position: relative;
+  padding:30px 30px 30px 30px ;
+}
+.h2services:after {
+    position: absolute;
+    transition: 1s;
+    content: '';
+    width: 0;
+    left: 50%;
+    bottom: 0;
+    height: 3px;
+    background:  lightskyblue;
+  }
+    .h2services:hover:after {
+      width: 50%;
+      left: 25%;
+    } 
+
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }	
+    }
+    @-webkit-keyframes slide {
+      0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+      } 
+      100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .btn-lg {
+          width: 100%;
+          margin-bottom: 35px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .logo {
+          font-size: 150px;
+      }
+    }

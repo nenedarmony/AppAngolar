@@ -9,6 +9,7 @@ import { AllShopsComponent } from './all-shops/all-shops.component';
 import { AllCategorysComponent } from './all-categorys/all-categorys.component';
 import { MapComponent } from './map/map.component';
 import { ShopsListComponent } from './shops-list/shops-list.component';
+import { HomeServicesComponent } from './home-services/home-services.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ShopsListComponent } from './shops-list/shops-list.component';
     AllShopsComponent,
     AllCategorysComponent,
     MapComponent,
-    ShopsListComponent
+    ShopsListComponent,
+    HomeServicesComponent
   ],
   
   imports: [
