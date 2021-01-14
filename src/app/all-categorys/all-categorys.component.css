@@ -29,7 +29,7 @@ body {
     overflow:hidden;
     transition: .3s;
   }
-  .button::after {
+  .button:after {
       position: absolute;
       transition: .3s;
       content: '';

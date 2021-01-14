@@ -5,8 +5,12 @@ body {
     line-height: 1.8;
     
 }
+p{
+  color:gray;
+}
 h4{
-  
+  font-size:4vh;
+  color:#4DD0E1;
 }
 .col-sm-4{
   text-align:center;
@@ -23,7 +27,9 @@ h4{
    width: 50%;
       left: 20%;
  position: relative;
-  padding:30px 30px 30px 30px ;
+ padding-top: 4vh;
+ padding-bottom: 5px;
+ 
 }
 .h2services:after {
     position: absolute;
