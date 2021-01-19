@@ -25,7 +25,8 @@ h4{
    
   border-top:4px  solid lightskyblue;
    width: 50%;
-      left: 20%;
+   right: 24%;
+      /* left: 20%; */
  position: relative;
  padding-top: 4vh;
  padding-bottom: 5px;
