@@ -9,6 +9,9 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'malLocationAngolarApp';
   show:boolean=true;
+   navbar = document.getElementById("myTopnav");
+   sticky = this.navbar.offsetTop;
+
   showme()
   {
     this.show=false;
@@ -21,4 +24,12 @@ export class AppComponent {
       x.className = "topnav";
     }
   } 
+
+   stikyFunction() {
+    if (window.pageYOffset >= this.sticky) {
+      this.navbar.classList.add("sticky")
+    } else {
+      this.navbar.classList.remove("sticky");
+    }
+  }
 }
