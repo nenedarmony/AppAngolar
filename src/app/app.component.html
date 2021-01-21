@@ -1,6 +1,6 @@
 <body>
 
-  <div class="topnav" id="myTopnav" (scroll) = stikyFunction()>
+  <div class="topnav" id="myTopnav" #stickyMenu [class.sticky] = "sticky" >
     <a  class="icon" class="active" (click)="myFunction()">  <i class="fa fa-bars fa-2x"></i>  </a>
     <a [routerLink]="['/home_services']"  (click)="showme()"> <i class="fa fa-fw fa-home fa-lg"></i>  בית</a>
     <a [routerLink]="['/all_categorys']" (click)="showme()"> <i class="fas fa-grip-horizontal fa-lg"></i>  חפש קטגוריה</a>
