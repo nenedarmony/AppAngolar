@@ -33,12 +33,12 @@ export class AppComponent implements OnInit{
         
       }
     }
-
+//function to 
   showme()
   {
     this.show=false;
   } 
-
+//function to open the nav bar when its on phon size:
    myFunction() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
