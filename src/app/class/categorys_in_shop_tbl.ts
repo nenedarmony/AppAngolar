@@ -1,4 +1,4 @@
-export class categoryInShop {
+export class categorysInShop {
 
     constructor
     (
