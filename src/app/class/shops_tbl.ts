@@ -1,8 +1,9 @@
 export class shops {
 
     constructor(
-        public AudienceID: number,
-        public AudienceName: string,
+        public ShopID?: number,
+        public ShopName?: string,
+        public IdFromAudience? : number
         
     ) { }
 }

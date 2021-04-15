@@ -37,6 +37,7 @@ export class AppComponent implements OnInit{
   showme()
   {
     this.show=false;
+    this.myFunction();
   } 
 //function to open the nav bar when its on phon size:
    myFunction() {

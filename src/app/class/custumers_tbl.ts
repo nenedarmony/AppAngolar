@@ -1,8 +1,8 @@
-export class Custumer {
+export class custumers {
 
     constructor
     (
-        public CustumerID: number,
-        public CustumerName: string, 
+        public CustumerID?: number,
+        public CustumerName?: string, 
     ) { }
 }

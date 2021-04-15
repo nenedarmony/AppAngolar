@@ -1,4 +1,6 @@
+import {} from 'googlemaps';
 import { Component, OnInit } from '@angular/core';
+
 
 @Component({
   selector: 'app-map',
@@ -9,7 +11,6 @@ export class MapComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
-
 }

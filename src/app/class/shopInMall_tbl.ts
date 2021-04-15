@@ -1,8 +1,8 @@
-export class shopFromMall {
+export class shopsInMall {
 
     constructor
     (
-        public IdFromMall: number,
-        public IdFromShop: number, 
+        public IdFromMall?: number,
+        public IdFromShop?: number, 
     ) { }
 }

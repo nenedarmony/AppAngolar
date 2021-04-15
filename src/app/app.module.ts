@@ -9,6 +9,9 @@ import { AllCategorysComponent } from './all-categorys/all-categorys.component';
 import { MapComponent } from './map/map.component';
 import { ShopsListComponent } from './shops-list/shops-list.component';
 import { HomeServicesComponent } from './home-services/home-services.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { ShopsService } from './services/shops.service';
 
 
 @NgModule({
@@ -24,9 +27,12 @@ import { HomeServicesComponent } from './home-services/home-services.component';
   
   imports: [
     BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ShopsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

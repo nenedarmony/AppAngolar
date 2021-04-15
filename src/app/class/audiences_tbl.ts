@@ -1,8 +1,8 @@
-export class Audience {
+export class audience {
 
     constructor
     (
-        public AudienceID: number,
-        public AudienceName: string, 
+        public AudienceID?: number,
+        public AudienceName?: string, 
     ) { }
 }
