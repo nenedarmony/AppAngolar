@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -13,6 +12,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ShopsService } from './services/shops.service';
 
+//importing AgmCoreModule from @agm/core
+import {  AgmCoreModule} from '@agm/core';
+import {MatGoogleMapsAutocompleteModule} from '@angular-material-extensions/google-maps-autocomplete';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,15 @@ import { ShopsService } from './services/shops.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    
+    //add AgmCoreModule
+    MatGoogleMapsAutocompleteModule,
+    AgmCoreModule.forRoot({
+      apiKey:'AIzaSyDvKT_FGvYrFHjJ_aNZzQjapB0P9WXm-Dk',
+      libraries:['places'],
+      apiVersion: 'quarterly'
+    })
   ],
   providers: [ShopsService],
   bootstrap: [AppComponent]
