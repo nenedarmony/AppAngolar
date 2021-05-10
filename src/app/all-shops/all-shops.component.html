@@ -1,16 +1,24 @@
 <!-- <app-shops-list id="list"></app-shops-list> -->
+<input type="text" list="list" placeholder="הכנס שם קניון" #mall (keyup.enter)="searchMall(mall.value)">
+
+<datalist id="list">
+    <option *ngFor="let item of lstMalls" [value]="item.name"></option>
+</datalist>
+
+
+
+<input placeholder="בחר חנויות" [ngStyle]="{'display':flag ? 'none':'block'}">
 <input class="searchBar" type="search" placeholder="חפש חנות "><i class="fas fa-search-location"></i>
 <div *ngFor="let item of lstShops">
-  <article class="entry">
-    <a>
-      <aside>
-        {{item.ShopName}}
-      </aside>
-      <img src=""/>
-    </a>
-   
-  </article>
-</div>
+    <article class="entry">
+        <a>
+            <aside>
+                {{item.ShopName}}
+            </aside>
+            <img src="" />
+        </a>
 
-  
- 
+    </article>
+
+</div>
+<div id="map"></div>

@@ -37,8 +37,9 @@ import {MatGoogleMapsAutocompleteModule} from '@angular-material-extensions/goog
     //add AgmCoreModule
     MatGoogleMapsAutocompleteModule,
     AgmCoreModule.forRoot({
+      clientId: '<mandatory>',
       apiKey:'AIzaSyDvKT_FGvYrFHjJ_aNZzQjapB0P9WXm-Dk',
-      libraries:['places'],
+      libraries: ['geometry', 'places'],
       apiVersion: 'quarterly'
     })
   ],

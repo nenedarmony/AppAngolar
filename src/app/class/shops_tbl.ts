@@ -7,3 +7,11 @@ export class shops {
         
     ) { }
 }
+
+export interface ShoppingMall{
+    place_id:string,
+    vicinity:string,
+    icon:string,
+    name:string,
+    
+}
