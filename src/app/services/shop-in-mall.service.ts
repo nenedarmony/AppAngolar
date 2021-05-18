@@ -22,4 +22,6 @@ export class ShopInMallService {
   delete(id:number ):Observable<boolean>{
     return this.myhttp.delete<boolean>(this.url+"delete"+id); 
   }
+
+  
 }

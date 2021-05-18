@@ -1,7 +1,6 @@
 import { } from 'googlemaps';
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
-import { AllCategorysComponent } from 'src/app/all-categorys/all-categorys.component';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
