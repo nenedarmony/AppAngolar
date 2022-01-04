@@ -1,123 +1,80 @@
+body {
+    background-color: #f0f0f0;
+}
 
-body{
-    background-color:#f0f0f0;
-  }
-  .entry{
-    position:relative;
-    width:300px;
-    height:200px;
+#map {
+    height: 100vh;
+}
+
+.entry {
+    position: relative;
+    width: 300px;
+    height: 200px;
     background: white;
-    margin:15px;
-    overflow:hidden;
-    float:left;
-    box-shadow: 0px 3px 8px rgba(0,0,0,.15);
-    
-  }
-    .searchBar{
-      width: 65%;
-      font-size: 18px;
-      padding: 9px;
-      border: 3px solid gray;
-      position: -webkit-sticky;
-      position: sticky;
-      top: 0;
-      z-index: 1;
+    margin: 15px;
+    overflow: hidden;
+    float: left;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, .15);
+}
+
+.main-search {
+    display: flex;
+    justify-content: center;
+}
+
+.searchBar {
+    width: 90%;
+    font-size: 18px;
+    border: 0.5px gray solid;
+    border-radius: 3px;
+    padding: 1px 3px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.searchBar input[type="search"] {
+    border: none;
+    width: 90%;
+}
+
+.searchBar input[type="search"]:focus {
+    outline: none
+}
+
+@media screen and (max-width: 450px) {
+    .map-container {
+        position: relative;
+        top: 12vh;
+        display: flex;
+        flex-direction: column;
     }
-      .entry-img hover {
-          right:0px;
-        top:-5px;
-        
-      }
-      .entry hover aside{
-        left:-125px;
-        transition: all 0.75s ease;
-        opacity:0;
-      }
-      .entry hover i{
-        left:110px;
-        opacity:1;
-       
-      }
-    
-    
-    .entry i{
-      border-radius:100%;
-      background-color:rgba(0,0,0,.4);
-      width:80px;
-      height:80px;
-      display:block;
-      position:absolute;
-      left:260px;
-      top:48px;
-      text-align:center;
-      line-height:72px;
-      color:white;
-      font-family:"effra";
-      font-size:100px;
-      font-weight:bold;
-      opacity:0;
-      transition: all 0.5s ease;
-     
+    .map-container #map {
+        flex-grow: 1;
     }
-    .entry i after{
-      content:'+';
+    .map-container .container {
+        flex-basis: 0;
+        flex-grow: 1;
     }
-    
-    aside{
-      width:100px;
-      padding:65px 25px 30px 25px;
-      z-index:100;
-      position:relative;
-      left:0px;
-      transition: all 0.5s ease;
+    .searchBar {
+        width: 90%;
     }
-    strong{
-      font-family: "effra";
-      text-transform:uppercase;
-      font-weight:bold;
-      font-size:16px;
-      line-height:14px;
-      color:#333;
-    }
-    
-    p{
-      font-family: "Arial";
-      font-size:13px;
-      margin-top:20px;
-      color:#888;
-    }
-    
-    a{
-      display:block;
-      width:inherit;height:inherit;
-    }
-      a hover{
-        cursor:pointer;
-      }
-     
-      
-      a img{
-        position:absolute;
-        top:0px;
-        right:-125px;
-        transition: all 0.5s ease;
-      }
-    
-    
-    ul{
-      position:absolute;
-      display:block;
-      bottom:-5px;
-      width:inherit;
-    }
-    li{
-      display:inline-block;
-      height:5px;
-      width:100px;
-      background-color:red;
-      overflow:hidden;
-      bottom:0px;
-      position:relative;
-      bottom:0px;
-    }
-  
+}
+
+.map-container {
+    display: flex;
+}
+
+.map-container #map {
+    flex-grow: 3;
+}
+
+.map-container .container {
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.selected {
+    background-color: rgba(0, 162, 255, 0.26);
+}

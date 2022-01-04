@@ -1,18 +1,16 @@
-export class shopsInMall {
 
+export class ShoppInMall {
     constructor
-    (
-        public IdFromMall?: number,
-        public IdFromShop?: number, 
+        (
+            public place_id?: string,
+            public name?: string,
+            public CurentLat?: number,
+            public CurentLang?: number,
+            public vicinity?: string,
+            public photo?: any,
+           public global_code?: string,
+           public start? :boolean,
+           public types? : Array<any>
     ) { }
- 
-}
 
-
-export interface ShoppInMall{
-    place_id:string,
-    vicinity:string,
-    icon:string,
-    name:string,
-    
 }

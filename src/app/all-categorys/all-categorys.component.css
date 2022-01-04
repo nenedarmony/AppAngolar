@@ -1,85 +1,113 @@
 body {
-  direction:rtl;
- font-family: Arial, Helvetica, sans-serif;
- background-color:wait;
- width:100;;
+    direction: rtl;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: wait;
+    width: 100;
+    ;
 }
 
 * {
- box-sizing: border-box;
- margin: 5% 1% 5% 5%;
-
-
+    box-sizing: border-box;
+    margin: 5% 1% 5% 5%;
 }
 
-/* Left column (menu) */
-
+.selected {
+    background-color: rgba(0, 162, 255, 0.26);
+}
 
 .left h2 {
-  text-align: center;
-  text-transform: uppercase;
-  color:grey;
-  padding-right: 4px;
- 
+    text-align: center;
+    text-transform: uppercase;
+    color: grey;
+    padding-right: 4px;
+}
+
+@media screen and (max-width: 450px) {
+    .map-container {
+        position: relative;
+        top: 12vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .map-container #map {
+        flex-grow: 1;
+    }
+    .map-container .container {
+        flex-basis: 0;
+        flex-grow: 1;
+    }
+    .searchBar {
+        width: 90%;
+    }
+}
+
+.map-container {
+    display: flex;
+}
+
+.map-container #map {
+    flex-grow: 3;
+}
+
+.map-container .container {
+    flex-basis: 0;
+    flex-grow: 1;
 }
 
 
 /* Style the search box */
-#mySearch {
- 
- width: 100%;
- font-size: 18px;
- padding: 11px;
- border: 3px solid gray;
-}
 
+
+/* 
+#mySearch {
+    width: 100%;
+    font-size: 18px;
+    padding: 11px;
+    border: 3px solid gray;
+}
 
 #myMenu {
- width:100%;
- list-style-type: none;
- padding: 0;
- margin: 0;
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
-#myMenu li a  {
- text-decoration:none;
-    box-shadow: 0 10px 15px 0 rgba(0,0,0,0.4);
+
+#myMenu li a {
+    text-decoration: none;
+    box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.4);
     background-color: lightskyblue;
-     color: #fff;
-   width:100%;
-   margin: 20px;
-   padding: 20px;
-   border: 2px solid lightskyblue;
-   text-align: center;
-   text-transform: uppercase;
-   position: relative;
-   overflow:hidden;
-   transition: .3s;
-  display: block
- }
- #myMenu li a :after {
-   
-     position: absolute;
-     transition: 3s;
-     content: '';
-     width: 0;
-     left: 50%;
-     bottom: 0;
-     height: 3px;
-    
- 
-   }
-  
-  
-  #myMenu li a:hover {
-    font-size:20px;
-      background-color: white;
-      color:lightskyblue ;
-        transform: scale(1.1);
-     cursor: pointer;
-   }
-
-#myMenu li a i{
- 
-   display: inline-block;
-
+    color: #fff;
+    width: 100%;
+    margin: 20px;
+    padding: 20px;
+    border: 2px solid lightskyblue;
+    text-align: center;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: .3s;
+    display: block
 }
+
+#myMenu li a :after {
+    position: absolute;
+    transition: 3s;
+    content: '';
+    width: 0;
+    left: 50%;
+    bottom: 0;
+    height: 3px;
+}
+
+#myMenu li a:hover {
+    font-size: 20px;
+    background-color: white;
+    color: lightskyblue;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+#myMenu li a i {
+    display: inline-block;
+} */

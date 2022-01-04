@@ -1,3 +1,11 @@
+<div>
+    <input type="text" class="form-control" list="list" placeholder="הכנס שם קניון" [(ngModel)]="inputValue" (ngModelChange)="searchMall($event)">
+
+    <datalist id="list">
+     <option *ngFor="let item of lstMalls" [value]="item.MallName"></option>
+     </datalist>
+</div>
+
 <div style="display: none">
     <div id="left-panel">
         <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location" />
@@ -18,8 +26,12 @@
     </div>
 </div>
 <div id="sidebar">
-
-    <button id="more">Load more results</button>
 </div>
 <div id="right-panel"></div>
 <div id="map"></div>
+
+<!-- This part is fallback for unhandled error which happens during change detection in the template -->
+<div class='crash-error-heading' [hidden]='true'>
+    <h2>Something went really wrong</h2>
+</div>
+<!---->

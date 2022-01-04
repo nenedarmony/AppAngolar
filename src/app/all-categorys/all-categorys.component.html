@@ -1,33 +1,41 @@
+<div class="map-container">
 
-<div class="row">
-  <div class="left">
-    <h2>fint your item</h2>
-    <input type="text" id="mySearch" (keyup)="myFunction()" placeholder="חפש קטגוריה" title="Type in a category">
-    <ul id="myMenu">
-      <li><a href="#"> <i class="fas fa-female fa-lg"></i> אופנת נשים  </a></li>
-      <li><a href="#"> ציוד ספורט <i class="fas fa-futbol fa-lg"></i></a> </li>
-      <li><a href="#">נעלי נשים <i class="fas fa-shoe-prints"></i></a></li>
-      <li><a href="#">   מסעדות <i class="fas fa-utensils"></i></a></li>
-      <li><a href="#">פארם  <i class="fas fa-capsules"></i></a></li>
-      <li><a href="#"> ספרים <i class="fas fa-book"></i></a></li>
-      <li><a href="#">אופטיקה <i class="fas fa-glasses"></i></a></li>
-      <li><a href="#">אופנת גברים <i class="fas fa-user-tie"></i></a></li>
-      <li><a href="#">הלבשה תחתונה <i class="fas fa-socks"></i></a></li>
-      <li><a href="#">הנעלת ילדים ותינוקות <i class="fas fa-baby"></i></a></li>
-      <li><a href="#">אופנת ילדים ותינוקות <i class="fas fa-baby-carriage"></i></a></li>
-      <li><a href="#">חדר כושר <i class="fas fa-dumbbell "></i></a></li>
-      <li><a href="#">מוצרי חשמל מחשב וסוללרי <i class="fas fa-laptop"></i></a></li>
-      <li><a href="#">מוצרי בית <i class="fas fa-couch"></i></a></li>
-      <li><a href="#">הנעלת גברים </a></li>
-      <li><a href="#">סופרמרקט <i class="fas fa-shopping-cart"></i></a></li>
-      <li><a href="#">ציוד משרדי <i class="fas fa-pencil-ruler"></i></a></li>
-      <li><a href="#">קוסמטיקה ויופי <i class="fab fa-keybase"></i></a></li>
-      <li><a href="#"> <i class="fas fa-shopping-bag"></i> תיקים ואקססוריז</a></li>
-      <li><a href="#">תכשיטים <i class="fas fa-ring"></i> </a></li>
+    <div class="container">
+        <div>
+            <input type="text" class="form-control" list="list" placeholder="הכנס שם קניון" placeholder="הכנס שם קניון" [(ngModel)]="inputValue" (ngModelChange)="searchMall($event)">
 
-    </ul>
-  </div>
-  
- 
+            <datalist id="list">
+          <option *ngFor="let item of lstMalls" [value]="item.MallName"></option>
+          </datalist>
+        </div>
+        <div class="row">
+            <div class="left">
+                <h2>find your item</h2>
+                <!-- <input type="text" id="mySearch" (keyup)="myFunction()" placeholder="חפש קטגוריה" title="Type in a category"> -->
+
+
+                <!-- <ul id="myMenu"> -->
+                <ul class="list-group">
+
+                    <li *ngFor="let item of typesArry" style="cursor: pointer;" [class.selected]="item.selected!=undefined && item.selected==true" (click)="type(item)" class="list-group-item d-flex justify-content-between align-items-center">
+                        <i class="{{item.ikon}}"></i> {{item.name}}
+                    </li>
+
+
+
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="map"></div>
+
 </div>
 
+<!-- This part is fallback for unhandled error which happens during change detection in the template -->
+<div class='crash-error-heading' [hidden]='true'>
+    <h2>Something went really wrong</h2>
+</div>
+<!---->

@@ -1,6 +1,10 @@
 import { } from 'googlemaps';
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { MapsAPILoader } from '@agm/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Input } from '@angular/core';
+import { AutocompleteDirectionsHandler } from "../class/AutocompleteDirectionsHandler"
+import { malls } from '../class/malls_tbl';
+import { ShoppInMall } from '../class/shopInMall_tbl';
+import { MatOptgroup } from '@angular/material/core';
+import { MapService } from '../class/map';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -8,221 +12,152 @@ import { MapsAPILoader } from '@agm/core';
 })
 
 export class MapComponent implements OnInit {
-  private geoCoder;
 
   @ViewChild('search')
+
   public searchElementRef: ElementRef;
+  public directionsService: google.maps.DirectionsService;
+  public directionsRenderer: google.maps.DirectionsRenderer;
+  public mapSevice: MapService;
+
+  latitude: number;
+  longitude: number;
+  currentLat: any;
+  currentLong: any;
+  map: google.maps.Map;
+  position: any;
+  marker: any;
+  lstMalls: Array<malls> = new Array<malls>();
+  // lstShops: Array<ShoppInMall> 
+
+  inputValue: string = "";
+  israel = { lat: 32.0127463274658, lng: 34.7789974668429 };
 
   constructor(
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone
-  ) { }
+  ) {
+   
+    this.mapSevice = new MapService();
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsRenderer = new google.maps.DirectionsRenderer();
+
+  }
 
 
   ngOnInit() {
 
     // Create a map and center it on israel.
-    const pyrmont = { lat: 32.0127463274658, lng: 34.7789974668429 };
-    const map = new google.maps.Map(
+    const israel = { lat: 32.0127463274658, lng: 34.7789974668429 };
+    this.findMe();
+
+    this.map = new google.maps.Map(
       document.getElementById("map") as HTMLElement,
       {
 
         mapTypeControl: false,
-        mapId: "6a2a54cc8596dad4",
+        // mapId: "c4829a478ddce469",
         zoom: 18,
-        center: pyrmont,
+        center: israel,
+        minZoom: 8,
       } as google.maps.MapOptions
     );
-    new AutocompleteDirectionsHandler(map);
+    this.mapSevice.init(this.map);
+    new AutocompleteDirectionsHandler(this.map);
+
+
+  }
+
+
+  findMe() {
+    if (navigator.geolocation) {
+
+      //getCurrentPosition() => get the curent position of the user 
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.currentLat = position.coords.latitude;
+        this.currentLong = position.coords.longitude;
+
+        // now we save the position end Changes the center of the map to the given {@link LatLng}.
+        const location = new google.maps.LatLng(this.currentLat, this.currentLong);
+        this.map.panTo(location);
+
+        // after centring the map we are put a marker on the current position 
+        if (!this.marker) {
+          this.marker = new google.maps.Marker({
+            draggable: true,
+            position: location,
+            map: this.map,
+            title: 'Got you!'
+          });
+        }
+        else {
+          this.marker.setPosition(location);
+        }
+        // the function dragedMarker() set the new position of the dragged marker 
+        this.dragedMarkerEndSetMall(this.marker)
+
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+
+  }
+
+  dragedMarkerEndSetMall(marker) {
+
+    //we add a eventListener so that whene the marker is dragged its position is seved 
+    //and at the same time the nearbySearch for the mall is updated
+    google.maps.event.addListener(marker, 'dragend', () => {
+      this.currentLat = marker.position.lat();
+      this.currentLong = marker.position.lng();
+
+      this.lstMalls = this.mapSevice.findMall(this.currentLat, this.currentLong)
+    });
+  }
+
+  searchMall(event) {
+    let selected_mall = this.lstMalls.find(m => m.MallName.trim() == event.trim())
+    let  lstShops=new Array<ShoppInMall>();
+    let potision = new google.maps.LatLng(selected_mall.CurentLat, selected_mall.CurentLang);
+    this.map.panTo(potision);
+    this.map.setZoom(20);
+    this.marker.setPosition(potision);
     // Create the places service.
-    const service = new google.maps.places.PlacesService(map);
-    let getNextPage: () => void | false;
-    const moreButton = document.getElementById("more") as HTMLButtonElement;
+    const service = new google.maps.places.PlacesService(this.map);
 
-    moreButton.onclick = function () {
-      moreButton.disabled = true;
-
-      if (getNextPage) {
-        getNextPage();
-      }
-    };
-
-    // Perform a nearby search.
+    // Perform a nearby search .
     service.nearbySearch(
-      { location: pyrmont, radius: 500, type: "store" },
+      { location: { lat: selected_mall.CurentLat, lng: selected_mall.CurentLang }, radius: 100, type: 'point_of_interest' },
       (
         results: google.maps.places.PlaceResult[] | null,
         status: google.maps.places.PlacesServiceStatus,
         pagination: google.maps.places.PlaceSearchPagination | null
       ) => {
-        if (status !== "OK" || !results) return;
-        console.log(results)
-
-        let list= results.map(s=> {return {lat:s.geometry.location.lat(), lan: s.geometry.location.lng()}})
-
-        console.log(list)
-        addPlaces(results, map);
-        moreButton.disabled = !pagination || !pagination.hasNextPage;
-
+        if (status != "OK" || !results) return;
+        results.forEach(sm => {
+         
+          // if (sm.vicinity != selected_mall.vicinity) return;
+          lstShops.push({
+            place_id: sm.place_id,
+            name: sm.name,
+            CurentLang: sm.geometry.location.lng(),
+            CurentLat: sm.geometry.location.lat(),
+            vicinity: sm.vicinity,
+            types:sm.types,
+            start: false
+          }
+          )
+        })
         if (pagination && pagination.hasNextPage) {
-          getNextPage = () => {
-            // Note: nextPage will call the same handler function as the initial call
-            pagination.nextPage();
-          };
+
+          pagination.nextPage();
+         
         }
-      }
-    );
 
+      }
+    )
+   
   }
 
 }
-function addPlaces(
-  places: google.maps.places.PlaceResult[],
-  map: google.maps.Map
-) {
 
-  
-  const placesList = document.getElementById("places") as HTMLElement;
 
-  for (const place of places) {
-    if (place.geometry && place.geometry.location) {
-      const image = {
-        url: place.icon!,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(15, 15),
-      };
 
-      new google.maps.Marker({
-        map,
-        icon: image,
-        title: place.name!,
-        position: place.geometry.location,
-      });
-    }
-  }
-}
-class AutocompleteDirectionsHandler {
-  map: google.maps.Map;
-  originPlaceId: string;
-  destinationPlaceId: string;
-  travelMode: google.maps.TravelMode;
-  directionsService: google.maps.DirectionsService;
-  directionsRenderer: google.maps.DirectionsRenderer;
-
-  constructor(map: google.maps.Map) {
-    this.map = map;
-    this.originPlaceId = "";
-    this.destinationPlaceId = "";
-    this.travelMode = google.maps.TravelMode.WALKING;
-    this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
-    this.directionsRenderer.setMap(map);
-    this.directionsRenderer.setPanel(
-      document.getElementById("right-panel") as HTMLElement
-    );
-
-    const control = document.getElementById("left-panel") as HTMLElement;
-    control.style.display = "block";
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
-    
-    const originInput = document.getElementById(
-      "origin-input"
-    ) as HTMLInputElement;
-    const destinationInput = document.getElementById(
-      "destination-input"
-    ) as HTMLInputElement;
-    const modeSelector = document.getElementById(
-      "mode-selector"
-    ) as HTMLSelectElement;
-
-    const originAutocomplete = new google.maps.places.Autocomplete(originInput, { componentRestrictions: { country: 'isr' } });
-    // Specify just the place data fields that you need.
-    originAutocomplete.setFields(["place_id"]);
-
-    const destinationAutocomplete = new google.maps.places.Autocomplete(
-      destinationInput, { componentRestrictions: { country: 'isr' } }
-    );
-    // Specify just the place data fields that you need.
-    destinationAutocomplete.setFields(["place_id"]);
-
-    this.setupClickListener(
-      "changemode-walking",
-      google.maps.TravelMode.WALKING
-    );
-    this.setupClickListener(
-      "changemode-transit",
-      google.maps.TravelMode.TRANSIT
-    );
-    this.setupClickListener(
-      "changemode-driving",
-      google.maps.TravelMode.DRIVING
-    );
-
-    this.setupPlaceChangedListener(originAutocomplete, "ORIG");
-    this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
-      destinationInput
-    );
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
-  }
-
-  // Sets a listener on a radio button to change the filter type on Places
-  // Autocomplete.
-  setupClickListener(id: string, mode: google.maps.TravelMode) {
-    const radioButton = document.getElementById(id) as HTMLInputElement;
-
-    radioButton.addEventListener("click", () => {
-      this.travelMode = mode;
-      this.route();
-    });
-  }
-
-  setupPlaceChangedListener(
-    autocomplete: google.maps.places.Autocomplete,
-    mode: string
-  ) {
-    autocomplete.bindTo("bounds", this.map);
-
-    autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
-
-      if (!place.place_id) {
-        window.alert("Please select an option from the dropdown list.");
-        return;
-      }
-
-      if (mode === "ORIG") {
-        this.originPlaceId = place.place_id;
-      } else {
-        this.destinationPlaceId = place.place_id;
-      }
-      this.route();
-    });
-  }
-
-  route() {
-    if (!this.originPlaceId || !this.destinationPlaceId) {
-      return;
-    }
-    const me = this;
-
-    this.directionsService.route(
-      {
-        origin: { placeId: this.originPlaceId },
-        destination: { placeId: this.destinationPlaceId },
-        travelMode: this.travelMode,
-      },
-      (response, status) => {
-        if (status === "OK") {
-          me.directionsRenderer.setDirections(response);
-        } else {
-          window.alert("Directions request failed due to " + status);
-        }
-      }
-    );
-  }
-}

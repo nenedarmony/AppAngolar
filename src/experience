@@ -1,0 +1,143 @@
+import { ShoppInMall } from '../class/shopInMall_tbl';
+
+class NodeVertex {
+    nameOfVertex: string;
+    weight: number;
+
+    constructor(nameOfVertex: string, weight: number) {
+        this.nameOfVertex = nameOfVertex;
+        this.weight = weight;
+    }
+}
+
+class Vertex {
+    name: string;
+    nodes: NodeVertex[];
+    weight: number;
+
+    constructor(theName: string, theNodes: NodeVertex[], theWeight: number) {
+        this.name = theName;
+        this.nodes = theNodes;
+        this.weight = theWeight;
+    }
+}
+
+class Dijkstra {
+    vertices: any;
+    constructor() {
+        this.vertices = {};
+    }
+
+    addVertex(vertex: Vertex): void {
+        this.vertices[vertex.name] = vertex;
+    }
+
+
+    findPointsOfShortestWay(start: string, finish: string, weight: number, vertice: any): string[] {
+
+        let nextVertex: string = finish;
+        let arrayWithVertex: string[] = [];
+        while (nextVertex != start) {
+
+            let minWeigth: number = Number.MAX_VALUE;
+            let minVertex: string = "";
+            for (let i of vertice[nextVertex].nodes) {
+                if (i.weight + vertice[i.nameOfVertex].weight < minWeigth) {
+                    minWeigth = vertice[i.nameOfVertex].weight;
+                    minVertex = i.nameOfVertex;
+                }
+            }
+            arrayWithVertex.push(minVertex);
+            nextVertex = minVertex;
+        }
+        return arrayWithVertex;
+    }
+
+
+    findShortestWay(start: string, finish: string, vertice: any): string[] {
+
+        let nodes: any = {};
+        // ולשאר הנקודות נותנים ערך מקסימליעובריפ על מטריצת הסמיכויות ,לנקודת ההתחלה נותנים ערך אפס
+        for (let i in vertice) {
+            if (vertice[i].name === start) {
+                vertice[i].weight = 0;
+
+            } else {
+                vertice[i].weight = Number.MAX_VALUE;
+            }
+            //יוצרים מערך של מרחקים 
+            nodes[vertice[i].name] = vertice[i].weight;
+        }
+
+        while (Object.keys(nodes).length !== 0) {
+            // עוברים וממינים אותו מחדש  nodes כל איבק במערך
+            let sortedVisitedByWeight: string[] = Object.keys(nodes).sort((a, b) => vertice[a].weight - vertice[b].weight);
+            let currentVertex: Vertex = vertice[sortedVisitedByWeight[0]];
+            for (let j of currentVertex.nodes) {
+                const calculateWeight: number = currentVertex.weight + j.weight;
+                if (vertice[j.nameOfVertex] != undefined)
+                    if (calculateWeight < vertice[j.nameOfVertex].weight) {
+                        vertice[j.nameOfVertex].weight = calculateWeight;
+                    }
+            }
+            delete nodes[sortedVisitedByWeight[0]];
+        }
+        const finishWeight: number = vertice[finish].weight;
+        let arrayWithVertex: string[] = this.findPointsOfShortestWay(start, finish, finishWeight, vertice).reverse();
+        arrayWithVertex.push(finish, finishWeight.toString());
+        console.log(arrayWithVertex);
+        return arrayWithVertex;
+    }
+}
+export class DijkstraAlgo {
+    makeAmapPoint(lstShops: Array<ShoppInMall>) {
+        let start = lstShops.find(s => s.start == true)
+        let dijkstra = new Dijkstra();
+
+        for (var i = 0; i < lstShops.length; i++) {
+            let v = new Array<NodeVertex>();
+            //מהתחלים את קודקוד ההתחלה כך שיצביע על כל הקודקודים
+            if (i == 0)
+                for (var j = 0; j < lstShops.length; j++) {
+                    if (lstShops[i].name != lstShops[j].name) {
+                    let start1 = new google.maps.LatLng(lstShops[i].CurentLang, lstShops[i].CurentLat);
+                    let point = new google.maps.LatLng(lstShops[j].CurentLang, lstShops[j].CurentLat);
+                    let distance = google.maps.geometry.spherical.computeDistanceBetween(start1, point);
+                    v.push(new NodeVertex(lstShops[j].name, distance));
+                    }
+                }
+            // if(i!= lstShops.length-1){
+            else {
+                let start1 = new google.maps.LatLng(lstShops[i].CurentLang, lstShops[i].CurentLat);
+                for (var j = 1; j < lstShops.length; j++) {
+                    if (lstShops[i].name != lstShops[j].name) {
+                        let point = new google.maps.LatLng(lstShops[j].CurentLang, lstShops[j].CurentLat);
+                        let distance = google.maps.geometry.spherical.computeDistanceBetween(start1, point);
+                        v.push(new NodeVertex(lstShops[j].name, distance));
+                    }
+                }
+            }
+            dijkstra.addVertex(new Vertex(lstShops[i].name, v, 1));
+            // }
+            //     else
+            //     dijkstra.addVertex(new Vertex(lstShops[i].name, new Array<NodeVertex>(), 1));
+
+        }
+
+        //הולכים למערך המרחקים של החנות הראשונה שהיא נקודת התחלה שלנו
+        // ומוצאים בו את המרחק הכי רחוק שאותו מגדירים כנקודת סיום 
+
+        let big = dijkstra.vertices[start.name].nodes.reduce((s, n) => {
+            if (n.weight > s) {
+                return n.weight
+            }
+            return s
+        }, 0)
+        let finish: NodeVertex = dijkstra.vertices[start.name].nodes.find(n => n.weight == big)
+        console.log(finish)
+        dijkstra.findShortestWay(start.name, finish.nameOfVertex, dijkstra.vertices);
+    }
+}
+
+
+
